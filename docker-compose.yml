@@ -1,0 +1,15 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+    php-fpm:
+      build: docker/php-fpm
+      container_name: php8-presentation-php-fpm
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+      tty: true
+      stdin_open: true
+
