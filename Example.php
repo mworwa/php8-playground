@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use JetBrains\PhpStorm\Pure;
-
 class Example
 {
     public static function createUser(string $username, int $depositBalance = 20, $bonusBalance = 100): string
