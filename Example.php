@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
+use JetBrains\PhpStorm\Pure;
+
 class Example
 {
-    private int|string $id;
-
-    public function getId(): int|string
+    public static function createUser(string $username, int $depositBalance = 20, $bonusBalance = 100): string
     {
-        return $this->id;
-    }
-
-    public function setId(int|string $id): void
-    {
-        $this->id = $id;
+        return sprintf(
+            'User %s created! Deposit balance = %d, Bonus balance = %d',
+            $username,
+            $depositBalance,
+            $bonusBalance
+        );
     }
 }
+
+echo Example::createUser(username: 'Janusz666', bonusBalance: 300) . PHP_EOL;
