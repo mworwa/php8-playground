@@ -2,60 +2,28 @@
 
 declare(strict_types=1);
 
-#[ClassAttribute('Class attribute')]
-class Example {
-    #[ConstAttribute]
-    private const FOO_CONST = 28;
-    #[ConstAttribute]
-    private const BAR_CONST = 28;
+class Client
+{
+    public function __construct(private ?Address $address = null) {}
 
-    #[PropertyAttribute(Example::BAR_CONST, 'string')]
-    private string $foo;
-
-    #[MethodAttribute, SomeOtherMethodAttribute]
-    public function getFoo(#[ArgumentAttribute(28)] $a): string{}
-}
-
-#[Attribute]
-class ClassAttribute {
-    public function __construct(private string $param) {}
-}
-
-#[Attribute]
-class ConstAttribute {
-
-}
-#[Attribute]
-class MethodAttribute {
-
-}
-
-#[Attribute]
-class SomeOtherMethodAttribute {
-
-}
-
-#[Attribute]
-class PropertyAttribute {
-    public function __construct(private int $param1, private string $param2)
+    public function getAddress(): ?Address
     {
+        return $this->address;
     }
 }
 
-#[Attribute]
-class ArgumentAttribute {
-    public function __construct(int $param) {}
+class Address {
+    public function __construct(private string $country) {}
+
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
 }
 
-$reflector = new \ReflectionClass(Example::class);
-$attrs = $reflector->getAttributes();
-
-foreach ($attrs as $attribute) {
-
-    var_dump($attribute->getName());
-}
+$client = new Client(new Address('PL'));
+var_dump($client->getAddress()->getCountry());
 
 /*
-- Możliwe jest dodanie wiecje niz jednego atrybutu
-- Atrybuty mogą być mieszne z dockblokiem i moga wystepowąc zarówno przed nim jak i po nim
+- Tylko read only ($client->getAddress()?->country = 'pl')
  */
