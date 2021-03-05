@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-class Client
-{
-    public function __construct(private ?Address $address = null) {}
-
-    public function getAddress(): ?Address
-    {
-        return $this->address;
-    }
+function handleGet(): string {
+    return 'Handling GET request';
 }
 
-class Address {
-    public function __construct(private string $country) {}
-
-    public function getCountry(): string
-    {
-        return $this->country;
-    }
+function handlePost(): string {
+    return 'Handling POST request';
 }
+$requestMethod = 'POST';
 
-$client = new Client(new Address('PL'));
-var_dump($client->getAddress()->getCountry());
+$status = match ($requestMethod) {
+    'POST' => handlePost(),
+    'GET' => handleGet(),
+    default => throw new Exception('Unsupported HTTP method'),
+};
+
+var_dump($status);
+
 
 /*
-- Tylko read only ($client->getAddress()?->country = 'pl')
+- Match expression moze zwracac wartosc
+- Dozwolone jest wiele wyrazeń 'POST', 'UPDATE' => handle()
+- Zostanie wykonany tylko jedna instrukcja podczas dopasowania wyrazenia
+- Wspierany jest default, ktory zostanie wykonany w przypadku niedopasowania do zdefiniowanych wyrazen
+- Match expression musi dopasować wyrażenie. W przypadku niedopasowania zostanie rzucony UnhandledMatchError
  */
