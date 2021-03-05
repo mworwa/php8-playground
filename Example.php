@@ -2,25 +2,60 @@
 
 declare(strict_types=1);
 
-class Example
-{
-    private int $test;
-    public function __construct(
-        private int $id,
-        private string $name,
-        private int $depositBalance,
-    ) {}
+#[ClassAttribute('Class attribute')]
+class Example {
+    #[ConstAttribute]
+    private const FOO_CONST = 28;
+    #[ConstAttribute]
+    private const BAR_CONST = 28;
+
+    #[PropertyAttribute(Example::BAR_CONST, 'string')]
+    private string $foo;
+
+    #[MethodAttribute, SomeOtherMethodAttribute]
+    public function getFoo(#[ArgumentAttribute(28)] $a): string{}
 }
 
-$example = new Example(1, 'Marcin', 666);
+#[Attribute]
+class ClassAttribute {
+    public function __construct(private string $param) {}
+}
 
-var_dump($example);
+#[Attribute]
+class ConstAttribute {
+
+}
+#[Attribute]
+class MethodAttribute {
+
+}
+
+#[Attribute]
+class SomeOtherMethodAttribute {
+
+}
+
+#[Attribute]
+class PropertyAttribute {
+    public function __construct(private int $param1, private string $param2)
+    {
+    }
+}
+
+#[Attribute]
+class ArgumentAttribute {
+    public function __construct(int $param) {}
+}
+
+$reflector = new \ReflectionClass(Example::class);
+$attrs = $reflector->getAttributes();
+
+foreach ($attrs as $attribute) {
+
+    var_dump($attribute->getName());
+}
 
 /*
-- Można uruchamiac dodatkowy kod w constructorze
-- Można mieszać promoted constructor promoted oraz zwykle
-- Typehint nie jest wymagany
-- Brak możliwości duplikowania pól
-- Brak molziwosci używania w interfejsach oraz klasach abstrakcyjnych
-- Składnie można wykorzystywac tylko w konstruktorze
+- Możliwe jest dodanie wiecje niz jednego atrybutu
+- Atrybuty mogą być mieszne z dockblokiem i moga wystepowąc zarówno przed nim jak i po nim
  */
